@@ -1,0 +1,21 @@
+<script src="http://apps.bdimg.com/libs/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript">
+
+	function on_click(){
+		temp = {name:55,sex:33};
+		jsondata = JSON.stringify(temp);
+		$.ajax({
+			type:"POST",
+			contentType: "application/json; charset=utf-8",
+			//dataType: "json",
+			url:'',
+			data:jsondata,
+			success:function(data){
+				alert("name="+data['name']+'\n'+"sex="+data['sex']);
+
+			},
+		});
+
+	}
+</script>
+<p onclick='on_click()'>测试</p>

@@ -1,0 +1,27 @@
+{% extends 'myweb/base.html' %}
+{% load blog_tags %}
+{% load pagination_tags %}
+{% block content %}
+    {% if list_header %}
+        <div class="box">{{ list_header }}</div>
+    {% endif %}
+    {% autopaginate posts 10 %}			
+	{% for post in posts %}
+		<div class="post">	
+				<h2><a href="{% url 'blog.views.post_detail' pk=post.pk %}">{{ post.caption }}</a></h2>
+            <div class="info">
+                <span class="date">{{ post.published_date|date:'Y年m月d日' }}</span>
+                
+                <div class="fixed"></div>
+            </div>
+            <div class="content">
+                <p>
+                    {% autoescape off %}
+                        {{ post.content|more:post.id }}
+                    {% endautoescape %}
+                </p>
+            </div>
+            
+        </div>
+	{% endfor %}
+{% endblock content %}

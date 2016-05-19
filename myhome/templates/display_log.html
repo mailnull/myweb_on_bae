@@ -1,0 +1,22 @@
+<script>
+var logs =  {{ logs|safe }};
+var sessions = "{{ request.session.testsessions }}";
+var a = "{{ a }}";
+</script>
+{% for log in logs %}
+<p>-------------------------------------</p>
+	<p>{{ log.room.name }}</p>
+	<p>{{ log.operation_data }}</p>
+	{% ifequal log.device 'light' %}
+		<p>照明 {% if log.light_status %}ON{% else %}OFF{% endif %}</p>
+	{% endifequal %}
+	{% ifequal log.device 'hvac' %}
+		{% if log.hvac_mode %}
+			<p>空调 {{ log.hvac_mode }}::{{ log.hvac_temperature }}</p>
+		{% else %}
+			<p>空调  关机</p>
+		{% endif %}
+	{% endifequal %}
+
+{% endfor %}
+<p>-------------------------------------</p>

@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+<style type="text/css">
+<!--
+* { margin: 0; padding: 0}
+#wrap { margin: auto;width: 80%}
+-->
+</style>
+<script src="http://apps.bdimg.com/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script> 
+<script type="application/javascript" language="javascript">
+$(function () { 
+    Highcharts.setOptions({
+        // 所有语言文字相关配置都设置在 lang 里
+        lang: {
+            resetZoom: '重置',
+            resetZoomTitle: '重置缩放比例'
+        },
+        global: {
+            useUTC: true,
+            //timezoneOffset: 8 * 60
+                }   
+    });
+
+
+    $('#container').highcharts({                   //图表展示容器，与div的id保持一致
+        chart: {
+            type: 'spline',                         //指定图表的类型，默认是折线图（line）
+            zoomType: 'x',
+            selectionMarkerFill: 'rgba(0,0,0, 0.2)',                       
+        },
+        title: {
+            text: '测试温度表{% if device %}:{{ device }}{% endif %}'      //指定图表标题
+        },
+        credits:{
+     		enabled:false // 禁用版权信息
+				},
+        xAxis: {
+            type: 'datetime',
+            //maxZoom: 3600*1000
+
+            //categories: [{% for post in posts %}'{{ post.published_date|date:'m-d H:i' }}',{% endfor %}]  //指定x轴分组
+        },
+        yAxis: {
+            title: {
+                text: 'Temperature(°C)'                  //指定y轴的标题
+            },
+            plotLines: [{						//指定y轴通过颜色线横贯在绘图区域上标记轴中的一个特定值
+                color: '#FF0000',
+                width: 2,
+                value: 0,
+                //dashStyle: 'longdashdot' //线的样式
+                	label:{
+                		x:-100,
+                		align:'right',
+                		text:'0度分线'
+                	}
+            }]
+        },
+        plotOptions: {
+            series: {
+                //color: '#FF0000'
+            }
+        },
+         tooltip: {
+            valueSuffix: '°C',
+            crosshairs: [{
+                width: 1,
+                color: '#7cb5ec'
+            }, {
+                width: 1,
+                color: '#7cb5ec'
+            }]
+        },
+        series: [{                                 //指定数据列
+            name: '{% if device %}{{ device|safe }}{% else %}{{ posts.0.device.name|safe }}{% endif %}',                          //数据列名
+            data: [{% for post in posts %}[Date.UTC({{ post.published_date|date:'Y,m-1,d,H,i,s' }}),{{ post.temp }}],{% endfor %}],                    //数据
+            zones:[{
+            	value:0,
+            	color:'#f7a35c'
+            	},
+            	{
+            		value:10,
+            		color:'#7cb5ec'
+            	},
+            	{
+            		color:'#90ed7d'
+            	}
+            ]
+        }]
+    });
+});
+</script>
+</head>
+<body>
+<div id="wrap">
+    <div id="container" style="min-width: 40%;  height: 500px; margin-top: 100px;"></div>
+</div>
+
+<div style="display:">{% for post in posts %}
+ <p>设备：{{ post.device.name }}</p>
+ <p>温度：{{ post.temp }}------uptime:{{ post.published_date|date:"Y,m,d,H:i:s"}}</p>
+ {% endfor %}
+ </div>
+
+ 
+
+</body>
+</html>

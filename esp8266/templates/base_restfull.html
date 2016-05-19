@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>django-websocket</title>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script type="text/javascript">//<![CDATA[
+    $(document).ready(function(){
+        var s = new WebSocket("ws://"+window.location.host +"{% url 'espsocket' %}");
+        s.onopen = function(e){
+            console.log('WebSocket open');
+            
+        }
+        s.onmessage = function(e){
+            console.log('message: ' + e.data);
+            $('#messagecontainer').prepend('<p>' + e.data + '</p>');
+        }
+        $('#send_message').click(function(){
+            if (!s){
+                alert("Please connect server.");
+            }else{
+                s.send($('#message').val());
+            }
+        });
+        $('#close_websocket').click(function(){
+            if(s){
+                s.close();
+            }
+        });
+        $('#connect_websocket').click(function () {
+            if(s){
+                s.close();
+
+            }
+            var s = new WebSocket("ws://" + window.location.host + "/esp8266/echo/");
+            s.onopen = function () {
+                console.log('WebSocket open');
+            };
+        });
+    });
+    // $(function () {
+    //     $('#connect_websocket').click(function () {
+    //         if(window.s){
+    //             window.s.close()
+    //         }
+    //         var s = new WebSocket("ws://" + window.location.host + "/esp8266/echo");
+    //         s.onopen = function () {
+    //             console.log('WebSocket open');
+    //         };
+    //         s.onmessage = function (e) {
+    //             console.log('message: ' + e.data);
+    //             $('#messagecontainer').prepend('<p>' + e.data + '</p>');
+    //         };
+    //         window.s = s;
+    //     });
+    //     $('#send_message').click(function () {
+    //         if(!window.s){
+    //             alert("Please connect server.");
+    //         }else{
+    //             window.s.send($('#message').val());
+    //         }
+    //     });
+    //     $('#close_websocket').click(function () {
+    //         if(window.s){
+    //             window.s.close();
+    //         }
+    //     });
+    // });
+    //]]></script>
+</head>
+<body>
+<br>
+<input type="text" id="message" value="Hello, World!" />
+<button type="button" id="connect_websocket">Connect websocket</button>
+<button type="button" id="send_message">Send message</button>
+<button type="button" id="close_websocket">Close websocket</button>
+<h1>Received Messages</h1>
+<div id="messagecontainer">
+</div>
+</body>
+</html>

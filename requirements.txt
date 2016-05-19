@@ -1,0 +1,17 @@
+django==1.7.11
+dj-database-url==0.3.0
+pytz==2014.9
+django-crispy-forms==1.4.0
+django-reversion==1.8.5
+django-redis==4.4.2
+Image
+lxml
+MySQL-python
+redis==2.10.5
+APScheduler==3.0.1
+xlwt==0.7.5
+git+https://github.com/sshwsfc/django-xadmin.git@django1.7
+qiniu
+poster
+requests
+git+https://github.com/duanhongyi/dwebsocket#egg=dwebsocket-master

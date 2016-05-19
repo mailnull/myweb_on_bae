@@ -1,0 +1,1 @@
+#default_app_config = "esp8266.apps.Esp8266AppConfig"
